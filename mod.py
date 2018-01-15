@@ -64,7 +64,7 @@ class net:
         sheet = excel.sheets()[0]
         nrows = sheet.nrows
         for i in range(nrows):
-            dictLine = {"name":sheet.row_values(i)[0],"des":sheet.row_values(i)[2]}
+            dictLine = {"name":sheet.row_values(i)[0],"des":sheet.row_values(i)[10]}
             self.data.append(dictLine)
             #print(sheet.row_values(i)[2])
 
@@ -74,8 +74,8 @@ class net:
         # 2 data -> feature
         for line in self.data:
             listFeature = [self.getType(line['name']),
-                           self.getClass(line['des']),
-                           #self.getPos(line['des']),
+                           #self.getClass(line['des']),
+                           self.getPos(line['des']),
                            #self.getReason(line['des']),
                            #self.getStep(line['des']),
                            #self.getResult(line['des'])
@@ -127,6 +127,10 @@ class net:
 
     # get the position
     def getPos(self,strings):
+        
+        lines = jieba.cut(strings)
+        print(", ".join(lines))
+        
         return 1
 
 
@@ -149,15 +153,15 @@ class net:
         alg = self.alg
         #feature = self.feature
         print(alg)
-        #if "KMeans" == alg :
+        #if 'KMeans' == alg:
         self.useKMeans()
 
-    
+
     def useKMeans(self):
         print("begining")
         feature = self.feature
         x = np.array(feature)
-        print(x)
+        # print(x)
         y_pred = KMeans(n_clusters = 2).fit_predict(x)
         plt.figure()
         plt.scatter(x[:,0], x[:,1], c = y_pred)
@@ -165,7 +169,7 @@ class net:
 
 
 
-
+# filepath :½the file path
 filepath = 'tem.xlsx'
 filepath = 'main.xls'
 alg = 'kMeans'
