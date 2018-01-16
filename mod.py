@@ -149,7 +149,7 @@ class net:
         return 1
 
 
-    # choice the alg
+    # choice the alg , you can add your alg here
     def getTheModel(self):
         alg = self.alg
         #feature = self.feature
