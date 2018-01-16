@@ -54,7 +54,7 @@ class net:
 
     def __init__(self,filepath, alg):
         self.filePath = filepath
-        self.alg = alg
+        self.alg = alg.lower()
 
     def preprocess(self):
 
@@ -127,10 +127,10 @@ class net:
 
     # get the position
     def getPos(self,strings):
-        
+
         lines = jieba.cut(strings)
-        print(", ".join(lines))
-        
+        # print(", ".join(lines))
+
         return 1
 
 
@@ -149,14 +149,16 @@ class net:
         return 1
 
 
+    # choice the alg
     def getTheModel(self):
         alg = self.alg
         #feature = self.feature
         print(alg)
-        #if 'KMeans' == alg:
-        self.useKMeans()
+        if 'kmeans' == alg:
+            self.useKMeans()
 
 
+    # use KMeans
     def useKMeans(self):
         print("begining")
         feature = self.feature
@@ -169,10 +171,10 @@ class net:
 
 
 
-# filepath :½the file path
+# filepath :the file path
 filepath = 'tem.xlsx'
 filepath = 'main.xls'
-alg = 'kMeans'
+alg = 'kmeans'
 g = net(filepath, alg)
 g.preprocess()
 g.getTheModel()
