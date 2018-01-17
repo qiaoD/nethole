@@ -83,7 +83,7 @@ class net:
             self.feature.append(listFeature)
 
         #print(self.feature)
-        # print(self.holeType)
+        print(self.holeType)
 
 
     # get the type of info
@@ -106,7 +106,7 @@ class net:
     # get the OS/APP/Device
     '''
         os | APP | Device
-         0 |  1  |  2
+       000 | 100 |  200
     '''
     def getClass(self,strings):
         classnum = 200
@@ -129,7 +129,7 @@ class net:
     def getPos(self,strings):
 
         lines = jieba.cut(strings)
-        # print(", ".join(lines))
+        print(", ".join(lines))
 
         return 1
 
