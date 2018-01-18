@@ -50,6 +50,8 @@ class net:
     alg      = ''
     data     = []
     feature  = []
+    pos      = []           # position
+    steps    = []           # steps
     holeType = []
 
     def __init__(self,filepath, alg):
@@ -64,7 +66,9 @@ class net:
         sheet = excel.sheets()[0]
         nrows = sheet.nrows
         for i in range(nrows):
-            dictLine = {"name":sheet.row_values(i)[2],"des":sheet.row_values(i)[5]}
+            dictLine = {"name":sheet.row_values(i)[0],
+                        "des":sheet.row_values(i)[10],
+                        "way":sheet.row_values(i)[10]}
             self.data.append(dictLine)
             #print(sheet.row_values(i)[2])
 
@@ -73,17 +77,27 @@ class net:
 
         # 2 data -> feature
         for line in self.data:
-            listFeature = [self.getType(line['name']),
+            #listFeature = [#self.getType(line['name']),
                            #self.getClass(line['des']),
-                           self.getPos(line['des']),
+                           #self.getPos(line['des']),
                            #self.getReason(line['des']),
                            #self.getStep(line['des']),
                            #self.getResult(line['des'])
-                           ]
-            self.feature.append(listFeature)
+                           #]
+            lineFea = self.getFeature(line['des'])
+            lineFea.append(line['way'])
+            self.feature.append(lineFea)
 
-        #print(self.feature)
-        print(self.holeType)
+        print(self.feature)
+        with open("pos.txt",'a+') as f:
+            for line in self.pos:
+                f.write(line+"\r\n")
+        f.close()
+        with open("step.txt",'a+') as f:
+            for line in self.steps:
+                f.write(line+"\r\n")
+        f.close()
+        #print(self.holeType)
 
 
     # get the type of info
@@ -126,12 +140,47 @@ class net:
 
 
     # get the position
-    def getPos(self,strings):
+    def getFeature(self,strings):
 
+        ret = []
+
+        mypos = ""
+        mystep = ""
         lines = jieba.cut(strings)
-        print(", ".join(lines))
+        posFlag = 0
+        stepFlag = 0
+        for line in lines:
+            if line == '。' or line == '，':
+                posFlag = 0
+                stepFlag = 0
 
-        return 1
+            if posFlag == 1:
+                mypos += str(line)
+
+            if line == '存在':
+                posFlag = 1
+
+            if stepFlag == 1:
+                mystep += str(line)
+
+            if line == '攻击者' or line == '者':
+                stepFlag = 1
+
+
+        mystep = mystep.strip()
+        print(mystep)
+        if not mystep in self.steps:
+            self.steps.append(mystep)
+
+        mypos = mypos.replace('漏洞','').strip()
+        if not mypos in self.pos:
+            self.pos.append(mypos)
+
+        ret.append(self.pos.index(mypos))
+        ret.append(self.steps.index(mystep))
+        #print(", ".join(lines))
+        #print(ret)
+        return ret
 
 
     # get the reason
@@ -174,8 +223,8 @@ class net:
 # filepath :the file path
 filepath = 'tem.xlsx'
 filepath = 'main.xls'
-filepath = 'sql.xlsx'
+# filepath = 'sql.xlsx'
 alg = 'kmeans'
 g = net(filepath, alg)
 g.preprocess()
-g.getTheModel()
+#g.getTheModel()
