@@ -64,7 +64,7 @@ class net:
         sheet = excel.sheets()[0]
         nrows = sheet.nrows
         for i in range(nrows):
-            dictLine = {"name":sheet.row_values(i)[0],"des":sheet.row_values(i)[10]}
+            dictLine = {"name":sheet.row_values(i)[2],"des":sheet.row_values(i)[5]}
             self.data.append(dictLine)
             #print(sheet.row_values(i)[2])
 
@@ -174,6 +174,7 @@ class net:
 # filepath :the file path
 filepath = 'tem.xlsx'
 filepath = 'main.xls'
+filepath = 'sql.xlsx'
 alg = 'kmeans'
 g = net(filepath, alg)
 g.preprocess()
