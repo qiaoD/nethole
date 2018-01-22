@@ -66,9 +66,9 @@ class net:
         sheet = excel.sheets()[0]
         nrows = sheet.nrows
         for i in range(nrows):
-            dictLine = {"name":sheet.row_values(i)[2],
-                        "des":sheet.row_values(i)[5],
-                        "way":sheet.row_values(i)[5]}
+            dictLine = {"name":sheet.row_values(i)[0],
+                        "des":sheet.row_values(i)[2],
+                        "way":sheet.row_values(i)[9]}
             #print(sheet.row_values(i)[4])
             self.data.append(dictLine)
             #print(sheet.row_values(i)[2])
@@ -89,6 +89,7 @@ class net:
             self.feature.append(lineFea)
 
         #print(self.feature)
+        '''
         with open("pos.txt",'a+') as f:
             for line in self.pos:
                 f.write(line+"\r\n")
@@ -98,6 +99,7 @@ class net:
                 f.write(line+"\r\n")
         f.close()
         #print(self.holeType)
+        '''
 
 
     # get the type of info
@@ -156,15 +158,28 @@ class net:
 
             if posFlag == 1:
                 mypos += str(line)
+                with open("pos.txt",'a+') as f:
+                    f.write(line+" ")
+                f.close()
 
             if line == '存在':
                 posFlag = 1
 
             if stepFlag == 1:
                 mystep += str(line)
+                with open("step.txt",'a+') as f:
+                    f.write(line+" ")
+                f.close()
 
             if line == '攻击者' or line == '者':
                 stepFlag = 1
+
+        with open("pos.txt",'a+') as f:
+            f.write("\r\n")
+        f.close()
+        with open("step.txt",'a+') as f:
+            f.write("\r\n")
+        f.close()
 
 
         mystep = mystep.strip()
@@ -223,7 +238,7 @@ class net:
 # filepath :the file path
 filepath = 'tem.xlsx'
 filepath = 'main.xls'
-filepath = 'sql.xlsx'
+filepath = 'SQLL.xlsx'
 alg = 'kmeans'
 g = net(filepath, alg)
 g.preprocess()
