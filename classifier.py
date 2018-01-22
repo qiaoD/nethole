@@ -53,7 +53,14 @@ class cls:
         if "" == predictFile:
             return -1;
 
-        myKey = 'sql'                                 # just for debug
-        myDict = self.bigDict[myKey]
-        for l in myDict:
-            print(l)
+        # get the predictFile
+        excel = xlrd.open_workbook(predictFile)
+        sheet = excel.sheets()[0]
+        nrows = sheet.nrows
+        for i in range(nrows):
+            des = sheet.row_values(i)[0]                  # get the description
+            myKey = 'sql'                                 # just for debug
+            myDict = self.bigDict[myKey]
+            for l in myDict:
+                # do something
+                print(l)
